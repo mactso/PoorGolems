@@ -28,8 +28,8 @@ public class MyConfig
 
 	public static int debugLevel;
 	public static int secondsBetweenIronDrops;
-	public static int ironDropAmount;
-
+	public static int MinIronDropAmount;
+	public static int MaxIronDropAmount;
 	
 	@SubscribeEvent
 	public static void onModConfigEvent(final ModConfig.ModConfigEvent configEvent)
@@ -44,7 +44,8 @@ public class MyConfig
 	{
 		debugLevel = SERVER.debugLevel.get();
 		secondsBetweenIronDrops = SERVER.secondsBetweenIronDrops.get();
-		ironDropAmount = SERVER.ironDropAmount.get();
+		MinIronDropAmount = SERVER.MinIronDropAmount.get();
+		MaxIronDropAmount = SERVER.MaxIronDropAmount.get();
 
 
 	}
@@ -55,12 +56,13 @@ public class MyConfig
 
 		public final IntValue debugLevel;
 		public final IntValue secondsBetweenIronDrops;
-		public final IntValue ironDropAmount;
+		public final IntValue MinIronDropAmount;
+		public final IntValue MaxIronDropAmount;
 
 		
 		public Server(ForgeConfigSpec.Builder builder)
 		{
-			builder.push("Villager Respawn Control Values");
+			builder.push("Poor Golems Control Values");
 
 			debugLevel = builder
 					.comment("Debug Level: 0 = Off, 1 = Log, 2 = Chat+Log")
@@ -73,11 +75,15 @@ public class MyConfig
 					.defineInRange("secondsBetweenIronDrops", () -> 60, 1, 3600);
 
 			
-			ironDropAmount = builder
-					.comment("Iron Drop Amount Maximum")
-					.translation(Main.MODID + ".config." + "ironDropAmount")
-					.defineInRange("ironDropAmount", () -> 9, 0, 32);
+			MinIronDropAmount = builder
+					.comment("Min Iron Drop Amount Maximum")
+					.translation(Main.MODID + ".config." + "MinIronDropAmount")
+					.defineInRange("MinIronDropAmount", () -> 1, 0, 1);
 
+			MaxIronDropAmount = builder
+					.comment("Max Iron Drop Amount Maximum")
+					.translation(Main.MODID + ".config." + "MaxIronDropAmount")
+					.defineInRange("MaxIronDropAmount", () -> 9, 0, 32);
 
 			
 			builder.pop();
