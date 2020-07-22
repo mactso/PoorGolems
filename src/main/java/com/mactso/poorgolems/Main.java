@@ -3,7 +3,7 @@ package com.mactso.poorgolems;
 
 
 import com.mactso.poorgolems.config.MyConfig;
-import com.mactso.poorgolems.events.GolemLootEvent;
+import com.mactso.poorgolems.events.GolemDropsEvent;
 
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -31,7 +31,7 @@ public class Main {
 		@SubscribeEvent 
 		public void preInit (final FMLCommonSetupEvent event) {
 			System.out.println("Poor Golems: Registering Handler");
-			MinecraftForge.EVENT_BUS.register(new GolemLootEvent());
+			MinecraftForge.EVENT_BUS.register(new GolemDropsEvent());
 			
 		}       
 
