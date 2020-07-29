@@ -8,10 +8,9 @@ import com.mactso.poorgolems.events.GolemDropsEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 @Mod("poorgolems")
@@ -35,9 +34,5 @@ public class Main {
 			
 		}       
 
-		// in 14.4 and later, config file loads when the server starts when the world starts.
-		@SubscribeEvent 
-		public void onServerStarting (FMLServerStartingEvent event) {
-//			VillagerRespawnCommands.register(event.getCommandDispatcher());
-		}
+
 }

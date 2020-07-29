@@ -1,5 +1,7 @@
 modLoader="javafml"
 loaderVersion="[32,)"
+license="MIT License"
+
 [[mods]]
 modId="poorgolems"
 version="${file.jarVersion}"
