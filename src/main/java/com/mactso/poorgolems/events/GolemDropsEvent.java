@@ -8,8 +8,10 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.passive.GolemEntity;
 import net.minecraft.entity.passive.IronGolemEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.util.DamageSource;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -32,6 +34,8 @@ public class GolemDropsEvent {
 			}
 			
 			if (eventEntity instanceof IronGolemEntity) {
+				
+				// remove iron ingots by default
 				Collection<ItemEntity> eventItems = event.getDrops();
 				eventItems.removeIf((itemEntity) -> {return itemEntity.getItem().getItem() == Items.IRON_INGOT;});
 				
@@ -45,6 +49,19 @@ public class GolemDropsEvent {
 								+"and dropped no iron.");
 					}	
 					return;
+				}
+				
+				if (MyConfig.lootKillRequirements != MyConfig.KILLER_ANY) {
+					// Has to have been killed by an entity
+					DamageSource dS = event.getSource();
+					if (dS.getTrueSource() != null) {
+						Entity golemKillerEntity = dS.getTrueSource();
+						if (MyConfig.lootKillRequirements == MyConfig.KILLER_PLAYER) {
+							if (!(golemKillerEntity instanceof ServerPlayerEntity)) {
+								return;
+							}
+						}
+					}
 				}
 
 				tickTimer = worldTime + (long) (MyConfig.secondsBetweenIronDrops * 20);

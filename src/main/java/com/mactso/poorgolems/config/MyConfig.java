@@ -25,11 +25,14 @@ public class MyConfig
 		SERVER_SPEC = specPair.getRight();
 		SERVER = specPair.getLeft();
 	}
-
 	public static int debugLevel;
 	public static int secondsBetweenIronDrops;
 	public static int MinIronDropAmount;
 	public static int MaxIronDropAmount;
+	public static int lootKillRequirements;
+	public static final int KILLER_ANY   = 0;
+	public static final int KILLER_MOB_OR_PLAYER = 1;
+	public static final int KILLER_PLAYER = 2;
 	
 	@SubscribeEvent
 	public static void onModConfigEvent(final ModConfig.ModConfigEvent configEvent)
@@ -44,9 +47,9 @@ public class MyConfig
 	{
 		debugLevel = SERVER.debugLevel.get();
 		secondsBetweenIronDrops = SERVER.secondsBetweenIronDrops.get();
-		MinIronDropAmount = SERVER.MinIronDropAmount.get();
-		MaxIronDropAmount = SERVER.MaxIronDropAmount.get();
-
+		MinIronDropAmount = SERVER.minIronDropAmount.get();
+		MaxIronDropAmount = SERVER.maxIronDropAmount.get();
+		lootKillRequirements = SERVER.lootKillRequirements.get();
 
 	}
 
@@ -56,9 +59,9 @@ public class MyConfig
 
 		public final IntValue debugLevel;
 		public final IntValue secondsBetweenIronDrops;
-		public final IntValue MinIronDropAmount;
-		public final IntValue MaxIronDropAmount;
-
+		public final IntValue minIronDropAmount;
+		public final IntValue maxIronDropAmount;
+		public final IntValue lootKillRequirements;
 		
 		public Server(ForgeConfigSpec.Builder builder)
 		{
@@ -75,16 +78,20 @@ public class MyConfig
 					.defineInRange("secondsBetweenIronDrops", () -> 60, 1, 3600);
 
 			
-			MinIronDropAmount = builder
-					.comment("Min Iron Drop Amount Maximum")
+			minIronDropAmount = builder
+					.comment("Min Iron Drop Amount Minimum")
 					.translation(Main.MODID + ".config." + "MinIronDropAmount")
-					.defineInRange("MinIronDropAmount", () -> 1, 0, 1);
+					.defineInRange("MinIronDropAmount", () -> 3, 0, 16);
 
-			MaxIronDropAmount = builder
+			maxIronDropAmount = builder
 					.comment("Max Iron Drop Amount Maximum")
 					.translation(Main.MODID + ".config." + "MaxIronDropAmount")
 					.defineInRange("MaxIronDropAmount", () -> 9, 0, 32);
 
+			lootKillRequirements = builder
+					.comment("Loot Kill Requirments: [0 Any], 1- Player or Mob, 2- Player")
+					.translation(Main.MODID + ".config." + "lootKillRequirements")
+					.defineInRange("lootKillRequirements", () -> 0, 0, 2);
 			
 			builder.pop();
 		}
