@@ -4,6 +4,7 @@ package com.mactso.poorgolems;
 
 import com.mactso.poorgolems.config.MyConfig;
 import com.mactso.poorgolems.events.GolemDropsEvent;
+import com.mactso.poorgolems.events.GolemSpawnEvent;
 
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -22,7 +23,7 @@ public class Main {
 	    {
 
 			FMLJavaModLoadingContext.get().getModEventBus().register(this);
-	        ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER,MyConfig.SERVER_SPEC );
+	        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON,MyConfig.COMMON_SPEC );
 			MinecraftForge.EVENT_BUS.register(this);
 	    }
 
@@ -31,7 +32,7 @@ public class Main {
 		public void preInit (final FMLCommonSetupEvent event) {
 			System.out.println("Poor Golems: Registering Handler");
 			MinecraftForge.EVENT_BUS.register(new GolemDropsEvent());
-			
+			MinecraftForge.EVENT_BUS.register(new GolemSpawnEvent());
 		}       
 
 

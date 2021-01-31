@@ -6,7 +6,6 @@ import com.mactso.poorgolems.config.MyConfig;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.passive.GolemEntity;
 import net.minecraft.entity.passive.IronGolemEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
