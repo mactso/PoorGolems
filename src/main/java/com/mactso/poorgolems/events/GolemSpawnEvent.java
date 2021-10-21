@@ -4,7 +4,6 @@ import com.mactso.poorgolems.config.MyConfig;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.GolemEntity;
-import net.minecraft.entity.passive.IronGolemEntity;
 import net.minecraft.util.ClassInheritanceMultiMap;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
@@ -28,10 +27,10 @@ public class GolemSpawnEvent {
 			return;
 		}
 
-		Chunk cen = (Chunk) w.getChunk(event.getEntity().getPosition());
+		Chunk cen = (Chunk) w.getChunk(event.getEntity().blockPosition());
 		int max = MyConfig.getIronGolemChunkLimit();
 		int cur = 0;
-		int height = event.getEntity().getPosition().getY();
+		int height = event.getEntity().blockPosition().getY();
 		height = height / 16;
 		if (height < 0) {
 			height = 4;
@@ -39,8 +38,8 @@ public class GolemSpawnEvent {
 		for (int i = -1; i < 2; i++) {
 			for (int j = -1; j < 2; j++) {
 				Chunk c = (Chunk) w.getChunk(cen.getPos().x + i, cen.getPos().z + j);
-				ClassInheritanceMultiMap<Entity>[] aL = c.getEntityLists();
-				cur = cur + aL[height].getByClass(GolemEntity.class).size();
+				ClassInheritanceMultiMap<Entity>[] aL = c.getEntitySections();
+				cur = cur + aL[height].find(GolemEntity.class).size();
 			}
 		}
 //		System.out.println(
@@ -48,12 +47,12 @@ public class GolemSpawnEvent {
 
 
 		if (cur-1 >= max) {
-			BlockPos pos = event.getEntity().getPosition();
-			event.getEntity().setPosition(pos.getX(), -3, pos.getZ());
-			event.getEntity().attackEntityFrom(DamageSource.OUT_OF_WORLD, 200);
+			BlockPos pos = event.getEntity().blockPosition();
+			event.getEntity().setPos(pos.getX(), -3, pos.getZ());
+			event.getEntity().hurt(DamageSource.OUT_OF_WORLD, 200);
 			if (MyConfig.debugLevel > 0) {
 				System.out.println(
-						"Poor Golem : Spawn Blocked. " + cur + " >= " + max + "   " + event.getEntity().getPosition());
+						"Poor Golem : Spawn Blocked. " + cur + " >= " + max + "   " + event.getEntity().blockPosition());
 			}
 		}
 	}

@@ -25,8 +25,8 @@ public class GolemDropsEvent {
 				return;
 			}
 
-			
-			if (!(eventEntity.world instanceof ServerWorld)) {
+	
+			if (!(eventEntity.level instanceof ServerWorld)) {
 				return;
 			}
 			
@@ -34,15 +34,13 @@ public class GolemDropsEvent {
 				Collection<ItemEntity> eventItems = event.getDrops();
 				eventItems.removeIf((itemEntity) -> {return itemEntity.getItem().getItem() == Items.IRON_INGOT;});
 				
-				long worldTime = eventEntity.world.getGameTime();
+				long worldTime = eventEntity.level.getGameTime();
 				if (tickTimer > worldTime) {
-					if (MyConfig.debugLevel > 0) {
-						System.out.println("Poor Golems: A Golem Died at: "
-								+ (int) eventEntity.getPosX() + ", "
-								+ (int) eventEntity.getPosY() + ", "
-								+ (int) eventEntity.getPosZ() + ", "
-								+"and dropped no iron.");
-					}	
+					MyConfig.dbgPrintln(0, "Poor Golems: A Golem Died at: "
+							+ (int) eventEntity.getX() + ", "
+							+ (int) eventEntity.getY() + ", "
+							+ (int) eventEntity.getZ() + ", "
+							+"and dropped no iron.");
 					return;
 				}
 
@@ -52,17 +50,18 @@ public class GolemDropsEvent {
 				if (rollRange < 0) {
 					rollRange = 0;
 				}
-				int randomLootRoll = (int) (Math.ceil(eventEntity.world.rand.nextDouble() * rollRange ) + MyConfig.MinIronDropAmount);
+				int randomLootRoll = (int) (Math.ceil(eventEntity.level.random.nextDouble() * rollRange ) + MyConfig.MinIronDropAmount);
 		        ItemStack itemStackToDrop = new ItemStack(Items.IRON_INGOT, (int) randomLootRoll );
-				ItemEntity myItemEntity = new ItemEntity (eventEntity.world, eventEntity.getPosX(),eventEntity.getPosY(),eventEntity.getPosZ(),itemStackToDrop);
+				ItemEntity myItemEntity = new ItemEntity (eventEntity.level, eventEntity.getX(),eventEntity.getY(),eventEntity.getZ(),itemStackToDrop);
 				eventItems.add(myItemEntity);
 
 				if (MyConfig.debugLevel > 0) {
-					System.out.println("Poor Golems: A Golem Died at: "
-							+ (int) eventEntity.getPosX() + ", "
-							+ (int) eventEntity.getPosY() + ", "
-							+ (int) eventEntity.getPosZ() + ", "
+					MyConfig.dbgPrintln(0, "Poor Golems: A Golem Died at: "
+							+ (int) eventEntity.getX() + ", "
+							+ (int) eventEntity.getY() + ", "
+							+ (int) eventEntity.getZ() + ", "
 							+"and dropped "+ randomLootRoll +" iron.");
+
 				}	
 
 				int debugline = 3;
