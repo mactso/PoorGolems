@@ -4,12 +4,12 @@ import java.util.Collection;
 
 import com.mactso.poorgolems.config.MyConfig;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.passive.IronGolemEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.animal.IronGolem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
@@ -26,11 +26,11 @@ public class GolemDropsEvent {
 			}
 
 	
-			if (!(eventEntity.level instanceof ServerWorld)) {
+			if (!(eventEntity.level instanceof ServerLevel)) {
 				return;
 			}
 			
-			if (eventEntity instanceof IronGolemEntity) {
+			if (eventEntity instanceof IronGolem) {
 				Collection<ItemEntity> eventItems = event.getDrops();
 				eventItems.removeIf((itemEntity) -> {return itemEntity.getItem().getItem() == Items.IRON_INGOT;});
 				

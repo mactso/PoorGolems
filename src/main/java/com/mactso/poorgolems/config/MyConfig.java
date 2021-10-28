@@ -7,15 +7,15 @@ import org.apache.logging.log4j.Logger;
 
 import com.mactso.poorgolems.Main;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.text.Color;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.TextColor;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.IntValue;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.fml.event.config.ModConfigEvent;
 
 @Mod.EventBusSubscriber(modid = Main.MODID, bus=Mod.EventBusSubscriber.Bus.MOD)
 // @Mod.EventBusSubscriber(modid = Main.MODID, bus=Mod.EventBusSubscriber.Bus.MOD)
@@ -63,22 +63,22 @@ public class MyConfig
 		}
 	}
 
-	public static void dbgChatln(PlayerEntity p, String dbgMsg, int dbgLevel) {
+	public static void dbgChatln(Player p, String dbgMsg, int dbgLevel) {
 		if (dbgLevel <= debugLevel ) {
-			sendChat (p, dbgMsg, Color.fromLegacyFormat((TextFormatting.YELLOW)));
+			sendChat (p, dbgMsg, TextColor.fromLegacyFormat((ChatFormatting.YELLOW)));
 		}
 	}
 
 	// support for any color chattext
-	public static void sendChat(PlayerEntity p, String chatMessage, Color color) {
-		StringTextComponent component = new StringTextComponent (chatMessage);
+	public static void sendChat(Player p, String chatMessage, TextColor color) {
+		TextComponent component = new TextComponent (chatMessage);
 		component.getStyle().withColor(color);
 		p.sendMessage(component, p.getUUID());
 	}
 	
 	// support for any color, optionally bold text.
-	public static void sendBoldChat(PlayerEntity p, String chatMessage, Color color) {
-		StringTextComponent component = new StringTextComponent (chatMessage);
+	public static void sendBoldChat(Player p, String chatMessage, TextColor color) {
+		TextComponent component = new TextComponent (chatMessage);
 
 		component.getStyle().withBold(true);
 		component.getStyle().withColor(color);
@@ -94,7 +94,7 @@ public class MyConfig
 	public static int MaxIronDropAmount;
 	
 	@SubscribeEvent
-	public static void onModConfigEvent(final ModConfig.ModConfigEvent configEvent)
+	public static void onModConfigEvent(final ModConfigEvent configEvent)
 	{
 		if (configEvent.getConfig().getSpec() == MyConfig.COMMON_SPEC)
 		{
@@ -136,12 +136,12 @@ public class MyConfig
 			ironGolemChunkLimit = builder
 					.comment("golemChunkLimit: Maximum Iron Golems per Chunk.")
 					.translation(Main.MODID + ".config." + "ironGolemChunkLimit")
-					.defineInRange("ironGolemChunkLimit", () -> 1, 0, 16);
+					.defineInRange("ironGolemChunkLimit", () -> 4, 1, 32);
 						
 			secondsBetweenIronDrops = builder
 					.comment("Seconds Between Iron Drops")
 					.translation(Main.MODID + ".config." + "secondsBetweenIronDrops")
-					.defineInRange("secondsBetweenIronDrops", () -> 60, 1, 3600);
+					.defineInRange("secondsBetweenIronDrops", () -> 30, 1, 3600);
 
 			
 			MinIronDropAmount = builder

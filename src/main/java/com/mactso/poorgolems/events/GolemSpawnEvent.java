@@ -1,59 +1,56 @@
 package com.mactso.poorgolems.events;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.mactso.poorgolems.config.MyConfig;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.passive.GolemEntity;
-import net.minecraft.util.ClassInheritanceMultiMap;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.animal.IronGolem;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.phys.AABB;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fmlserverevents.FMLServerStartedEvent;
 
 public class GolemSpawnEvent {
 
+	
 	@SubscribeEvent
-	public void handleGolemSpawnEvent(LivingSpawnEvent event) {
-		IWorld w = event.getWorld();
+	public void handleGolemSpawnEvent(EntityJoinWorldEvent event) {
 
-		if (!(event.getEntity() instanceof GolemEntity)) {
-			return;
-		}
-		
-		if (!(w instanceof ServerWorld)) {
-			return;
-		}
+		if (event.getWorld() instanceof ServerLevel varW && 
+		    event.getEntity() instanceof IronGolem e) {
 
-		Chunk cen = (Chunk) w.getChunk(event.getEntity().blockPosition());
-		int max = MyConfig.getIronGolemChunkLimit();
-		int cur = 0;
-		int height = event.getEntity().blockPosition().getY();
-		height = height / 16;
-		if (height < 0) {
-			height = 4;
-		}
-		for (int i = -1; i < 2; i++) {
-			for (int j = -1; j < 2; j++) {
-				Chunk c = (Chunk) w.getChunk(cen.getPos().x + i, cen.getPos().z + j);
-				ClassInheritanceMultiMap<Entity>[] aL = c.getEntitySections();
-				cur = cur + aL[height].find(GolemEntity.class).size();
+			CompoundTag nbt = e.getPersistentData();
+			
+			if (nbt.getBoolean("PoorSpawned")) {
+				return;
 			}
-		}
-//		System.out.println(
-//				"Poor Golem : Spawn Attempt. cur: " + cur + " >=  max:" + max + "   " + event.getEntity().getPosition());
-
-
-		if (cur-1 >= max) {
-			BlockPos pos = event.getEntity().blockPosition();
-			event.getEntity().setPos(pos.getX(), -3, pos.getZ());
-			event.getEntity().hurt(DamageSource.OUT_OF_WORLD, 200);
-			if (MyConfig.debugLevel > 0) {
-				System.out.println(
-						"Poor Golem : Spawn Blocked. " + cur + " >= " + max + "   " + event.getEntity().blockPosition());
+			
+			System.out.println("EntityId=" + e.getId());
+			BlockPos spawnPos = new BlockPos(e.getX(), e.getY(), e.getZ());
+			AABB aabb = new AABB(spawnPos.east(16).above(8).north(16), spawnPos.west(16).below(8).south(16));
+			List<Entity> l  = new ArrayList<>();
+			varW.getEntities().get(EntityType.IRON_GOLEM,
+					aabb,
+					(entity)->{
+						l.add(entity);
+						});
+			if (l.size() >= MyConfig.getIronGolemChunkLimit()) {
+				BlockPos pos = spawnPos;
+				event.getEntity().setPos(pos.getX(), -3, pos.getZ());
+				event.getEntity().hurt(DamageSource.OUT_OF_WORLD, 200);			
+			} else {
+				nbt.putBoolean("PoorSpawned", true);
 			}
+			
 		}
 	}
 }

@@ -34,6 +34,4 @@ public class Main {
 			MinecraftForge.EVENT_BUS.register(new GolemDropsEvent());
 			MinecraftForge.EVENT_BUS.register(new GolemSpawnEvent());
 		}       
-
-
 }
