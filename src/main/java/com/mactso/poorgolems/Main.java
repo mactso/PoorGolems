@@ -13,6 +13,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.event.RegisterCommandsEvent;
 
 @Mod("poorgolems")
 public class Main {
@@ -33,5 +34,17 @@ public class Main {
 			System.out.println("Poor Golems: Registering Handler");
 			MinecraftForge.EVENT_BUS.register(new GolemDropsEvent());
 			MinecraftForge.EVENT_BUS.register(new GolemSpawnEvent());
-		}       
+		}   
+
+		
+	    @Mod.EventBusSubscriber()
+	    public static class ForgeEvents
+	    {
+			@SubscribeEvent 		
+			public static void onCommandsRegistry(final RegisterCommandsEvent event) {
+				System.out.println("Poor Golems: Registering Command Dispatcher");
+				ModCommands.register(event.getDispatcher());			
+			}
+
+	    }
 }

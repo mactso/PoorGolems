@@ -23,6 +23,7 @@ public class MyConfig
 {
 	private static final Logger LOGGER = LogManager.getLogger();
 	public static final Common COMMON;
+	public static String ironGolemDropModeDescriptions[] = new String []{"","Ingots","Nuggets","Blocks"};
 	public static final ForgeConfigSpec COMMON_SPEC;
 	static
 	{
@@ -34,7 +35,6 @@ public class MyConfig
 	public static int getIronGolemChunkLimit() {
 		return ironGolemChunkLimit;
 	}
-
 
 	public static int getDebugLevel() {
 		return debugLevel;
@@ -48,13 +48,11 @@ public class MyConfig
 		return secondsBetweenIronDrops;
 	}
 
-	public static int getMinIronDropAmount() {
-		return MinIronDropAmount;
-	}
+	
+	
+	public static int getMinIronDropAmount() { return MinIronDropAmount; }
 
-	public static int getMaxIronDropAmount() {
-		return MaxIronDropAmount;
-	}
+	public static int getMaxIronDropAmount() { return MaxIronDropAmount; }
 
 	// support for debug messages
 	public static void dbgPrintln(int dbgLevel, String dbgMsg) {
@@ -76,6 +74,14 @@ public class MyConfig
 		p.sendMessage(component, p.getUUID());
 	}
 	
+    // for this mod- default color is green.
+	// support for any color chattext
+	public static void sendChat(Player p, String chatMessage) {
+		TextComponent component = new TextComponent (chatMessage);
+		component.setStyle(component.getStyle().withColor(TextColor.fromLegacyFormat(ChatFormatting.GREEN)));
+		p.sendMessage(component, p.getUUID());
+	}
+	
 	// support for any color, optionally bold text.
 	public static void sendBoldChat(Player p, String chatMessage, TextColor color) {
 		TextComponent component = new TextComponent (chatMessage);
@@ -86,13 +92,21 @@ public class MyConfig
 		p.sendMessage(component, p.getUUID());
 	}
 
+	public static int getIronGolemDropMode() {
+		return ironGolemDropMode;
+	}
+
+	public static String getIronGolemDropModeAsString() {
+		return ironGolemDropModeDescriptions [getIronGolemDropMode()];
+	}
 	
 	public static int debugLevel;
 	public static int ironGolemChunkLimit;
 	public static int secondsBetweenIronDrops;
 	public static int MinIronDropAmount;
 	public static int MaxIronDropAmount;
-	
+	public static int ironGolemDropMode;
+
 	@SubscribeEvent
 	public static void onModConfigEvent(final ModConfigEvent configEvent)
 	{
@@ -101,7 +115,14 @@ public class MyConfig
 			bakeConfig();
 		}
 	}
-
+	
+	public static void pushDebugValue() {
+		if (debugLevel > 0) {
+			System.out.println("Poor Golems Debug Level:"+MyConfig.debugLevel);
+		}
+		COMMON.debugLevel.set( MyConfig.debugLevel);
+	}
+	
 	public static void bakeConfig()
 	{
 		debugLevel = COMMON.debugLevel.get();
@@ -109,8 +130,7 @@ public class MyConfig
 		secondsBetweenIronDrops = COMMON.secondsBetweenIronDrops.get();
 		MinIronDropAmount = COMMON.MinIronDropAmount.get();
 		MaxIronDropAmount = COMMON.MaxIronDropAmount.get();
-
-
+		ironGolemDropMode = COMMON.ironGolemDropMode.get();
 	}
 
 
@@ -122,6 +142,7 @@ public class MyConfig
 		public final IntValue secondsBetweenIronDrops;
 		public final IntValue MinIronDropAmount;
 		public final IntValue MaxIronDropAmount;
+		public final IntValue ironGolemDropMode;
 
 		
 		public Common(ForgeConfigSpec.Builder builder)
@@ -154,7 +175,11 @@ public class MyConfig
 					.translation(Main.MODID + ".config." + "MaxIronDropAmount")
 					.defineInRange("MaxIronDropAmount", () -> 9, 0, 32);
 
-			
+			ironGolemDropMode = builder
+					.comment("Do Iron Golems Drop Ingots(1), Nuggets(2), or Blocks(3) of Iron?")
+					.translation(Main.MODID + ".config." + "ironGolemDropMode")
+					.defineInRange("ironGolemDropMode", 1, 1, 3);
+
 			builder.pop();
 		}
 	}
