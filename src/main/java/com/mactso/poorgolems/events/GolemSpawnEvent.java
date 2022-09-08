@@ -18,7 +18,7 @@ import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 public class GolemSpawnEvent {
-
+	
 	
 	@SubscribeEvent
 	public void handleGolemSpawnEvent(EntityJoinLevelEvent event) {
