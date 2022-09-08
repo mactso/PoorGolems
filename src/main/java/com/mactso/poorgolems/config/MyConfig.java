@@ -7,10 +7,6 @@ import org.apache.logging.log4j.Logger;
 
 import com.mactso.poorgolems.Main;
 
-import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.TextColor;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.IntValue;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -53,44 +49,6 @@ public class MyConfig
 	public static int getMinIronDropAmount() { return MinIronDropAmount; }
 
 	public static int getMaxIronDropAmount() { return MaxIronDropAmount; }
-
-	// support for debug messages
-	public static void dbgPrintln(int dbgLevel, String dbgMsg) {
-		if (dbgLevel <= debugLevel) {
-			System.out.println (dbgMsg);
-		}
-	}
-
-	public static void dbgChatln(Player p, String dbgMsg, int dbgLevel) {
-		if (dbgLevel <= debugLevel ) {
-			sendChat (p, dbgMsg, TextColor.fromLegacyFormat((ChatFormatting.YELLOW)));
-		}
-	}
-
-	// support for any color chattext
-	public static void sendChat(Player p, String chatMessage, TextColor color) {
-		TextComponent component = new TextComponent (chatMessage);
-		component.getStyle().withColor(color);
-		p.sendMessage(component, p.getUUID());
-	}
-	
-    // for this mod- default color is green.
-	// support for any color chattext
-	public static void sendChat(Player p, String chatMessage) {
-		TextComponent component = new TextComponent (chatMessage);
-		component.setStyle(component.getStyle().withColor(TextColor.fromLegacyFormat(ChatFormatting.GREEN)));
-		p.sendMessage(component, p.getUUID());
-	}
-	
-	// support for any color, optionally bold text.
-	public static void sendBoldChat(Player p, String chatMessage, TextColor color) {
-		TextComponent component = new TextComponent (chatMessage);
-
-		component.getStyle().withBold(true);
-		component.getStyle().withColor(color);
-		
-		p.sendMessage(component, p.getUUID());
-	}
 
 	public static int getIronGolemDropMode() {
 		return ironGolemDropMode;

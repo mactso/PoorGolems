@@ -1,12 +1,11 @@
 modLoader="javafml"
-loaderVersion="[39,)"
+loaderVersion="[41,)"
 license="MIT License"
-
 [[mods]]
 modId="poorgolems"
 version="${file.jarVersion}"
 displayName="Poor Golems Mod"
-displayURL="https://www.curseforge.com/minecraft/mc-mods/villagers-respawn"
+displayURL="https://www.curseforge.com/minecraft/mc-mods/poor-golems"
 updateJSONURL="https://github.com/mactso/PoorGolems/raw/master/update.json"
 logoFile="logo.png"
 authors="MacTso, Lupicus"
@@ -14,13 +13,13 @@ description='''Poor Golems.'''
 [[dependencies.poorgolems]]
     modId="forge"
     mandatory=true
-    versionRange="[39,)"
+    versionRange="[41,)"
     ordering="NONE"
     side="BOTH"
 
 [[dependencies.poorgolems]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.18.1,1.19.0)"
+    versionRange="[1.19,1.20)"
     ordering="NONE"
     side="BOTH"

@@ -1,6 +1,11 @@
 package com.mactso.poorgolems.events;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.mactso.poorgolems.config.MyConfig;
+import com.mactso.poorgolems.util.Utility;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
@@ -9,19 +14,16 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.IronGolem;
 import net.minecraft.world.phys.AABB;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class GolemSpawnEvent {
 
 	
 	@SubscribeEvent
-	public void handleGolemSpawnEvent(EntityJoinWorldEvent event) {
+	public void handleGolemSpawnEvent(EntityJoinLevelEvent event) {
 
-		if (event.getWorld() instanceof ServerLevel varW && 
+		if (event.getLevel() instanceof ServerLevel varW && 
 		    event.getEntity() instanceof IronGolem e) {
 
 			CompoundTag nbt = e.getPersistentData();
@@ -43,13 +45,8 @@ public class GolemSpawnEvent {
 				BlockPos pos = spawnPos;
 				event.getEntity().setPos(pos.getX(), -3, pos.getZ());
 				event.getEntity().hurt(DamageSource.OUT_OF_WORLD, 200);		
-				if (MyConfig.debugLevel > 0) {
-					MyConfig.dbgPrintln(0, "Poor Golems: "+ MyConfig.getIronGolemChunkLimit()+" Golem Chunk Limit Blocked Attempted Golem Spawn at: "
-							+ (int) pos.getX() + ", "
-							+ (int) pos.getY() + ", "
-							+ (int) pos.getZ() + " ");
+					Utility.debugMsg(0, event.getEntity().blockPosition(), "Poor Golems: "+ MyConfig.getIronGolemChunkLimit()+" Golem Chunk Limit Blocked Attempted Golem Spawn.");
 
-				}	
 			} else {
 				nbt.putBoolean("PoorSpawned", true);
 			}

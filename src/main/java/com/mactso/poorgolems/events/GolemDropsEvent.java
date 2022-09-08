@@ -3,6 +3,7 @@ package com.mactso.poorgolems.events;
 import java.util.Collection;
 
 import com.mactso.poorgolems.config.MyConfig;
+import com.mactso.poorgolems.util.Utility;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -20,7 +21,7 @@ public class GolemDropsEvent {
 		@SubscribeEvent
 	    public void handleGolemDropsEvent(LivingDropsEvent event) { 
 			
-			Entity eventEntity = event.getEntityLiving();
+			Entity eventEntity = event.getEntity();
 			if (event.getEntity() == null) {
 				return;
 			}
@@ -31,17 +32,14 @@ public class GolemDropsEvent {
 			}
 			
 			if (eventEntity instanceof IronGolem) {
+
 				Collection<ItemEntity> eventItems = event.getDrops();
 				eventItems.removeIf((itemEntity) -> {return itemEntity.getItem().getItem() == Items.IRON_INGOT;});
 				
 				long worldTime = eventEntity.level.getGameTime();
 				if (tickTimer > worldTime) {
 					long seconds = 1 + ((tickTimer - worldTime) / 20);
-					MyConfig.dbgPrintln(0, "Poor Golems: A Golem Died "+ seconds +" Seconds Too Soon at: "
-							+ (int) eventEntity.getX() + ", "
-							+ (int) eventEntity.getY() + ", "
-							+ (int) eventEntity.getZ() + ", "
-							+"and dropped no iron.");
+					Utility.debugMsg (0, event.getEntity().blockPosition(), "Poor Golems: A Golem Died "+ seconds +" Seconds sToo soon and dropped no iron.");
 					return;
 				}
 
@@ -71,16 +69,10 @@ public class GolemDropsEvent {
 					eventItems.add(myItemEntity);
 				}
 
-				if (MyConfig.debugLevel > 0) {
-					MyConfig.dbgPrintln(0, "Poor Golems: A Golem Died at: "
-							+ (int) eventEntity.getX() + ", "
-							+ (int) eventEntity.getY() + ", "
-							+ (int) eventEntity.getZ() + ", "
+				Utility.debugMsg(0, event.getEntity().blockPosition(), "Poor Golems: A Golem Died at: "
 							+"and dropped "+ randomLootRoll +" iron.");
 
-				}	
 
-				int debugline = 3;
 			}
 		}
 	 
