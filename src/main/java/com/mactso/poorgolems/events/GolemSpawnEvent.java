@@ -9,7 +9,7 @@ import com.mactso.poorgolems.util.Utility;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.util.AbortableIterationConsumer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.IronGolem;
@@ -32,20 +32,21 @@ public class GolemSpawnEvent {
 				return;
 			}
 			
-			System.out.println("EntityId=" + e.getId());
-			BlockPos spawnPos = new BlockPos(e.getX(), e.getY(), e.getZ());
+//			System.out.println("EntityId=" + e.getId());
+			BlockPos spawnPos = BlockPos.containing(e.getX(), e.getY(), e.getZ());
 			AABB aabb = new AABB(spawnPos.east(16).above(8).north(16), spawnPos.west(16).below(8).south(16));
 			List<Entity> l  = new ArrayList<>();
 			varW.getEntities().get(EntityType.IRON_GOLEM,
 					aabb,
 					(entity)->{
 						l.add(entity);
+						return AbortableIterationConsumer.Continuation.CONTINUE;
 						});
 			if (l.size() >= MyConfig.getIronGolemChunkLimit()) {
 				BlockPos pos = spawnPos;
 				event.getEntity().setPos(pos.getX(), -3, pos.getZ());
-				event.getEntity().hurt(DamageSource.OUT_OF_WORLD, 200);		
-					Utility.debugMsg(0, event.getEntity().blockPosition(), "Poor Golems: "+ MyConfig.getIronGolemChunkLimit()+" Golem Chunk Limit Blocked Attempted Golem Spawn.");
+				event.getEntity().hurt(event.getEntity().damageSources().fellOutOfWorld(), 200);		
+					Utility.debugMsg(2, event.getEntity().blockPosition(), "Poor Golems: "+ MyConfig.getIronGolemChunkLimit()+" Golem Chunk Limit Blocked Attempted Golem Spawn.");
 
 			} else {
 				nbt.putBoolean("PoorSpawned", true);

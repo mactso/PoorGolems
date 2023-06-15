@@ -27,7 +27,7 @@ public class GolemDropsEvent {
 			}
 
 	
-			if (!(eventEntity.level instanceof ServerLevel)) {
+			if (!(eventEntity.level() instanceof ServerLevel)) {
 				return;
 			}
 			
@@ -36,10 +36,10 @@ public class GolemDropsEvent {
 				Collection<ItemEntity> eventItems = event.getDrops();
 				eventItems.removeIf((itemEntity) -> {return itemEntity.getItem().getItem() == Items.IRON_INGOT;});
 				
-				long worldTime = eventEntity.level.getGameTime();
+				long worldTime = eventEntity.level().getGameTime();
 				if (tickTimer > worldTime) {
 					long seconds = 1 + ((tickTimer - worldTime) / 20);
-					Utility.debugMsg (0, event.getEntity().blockPosition(), "Poor Golems: A Golem Died "+ seconds +" Seconds sToo soon and dropped no iron.");
+					Utility.debugMsg (1, event.getEntity().blockPosition(), "Poor Golems: A Golem Died "+ seconds +" Seconds sToo soon and dropped no iron.");
 					return;
 				}
 
@@ -49,27 +49,29 @@ public class GolemDropsEvent {
 				if (rollRange < 0) {
 					rollRange = 0;
 				}
-				int randomLootRoll = (int) (Math.ceil(eventEntity.level.random.nextDouble() * rollRange ) + MyConfig.MinIronDropAmount);
+				
+				@SuppressWarnings("resource")
+				int randomLootRoll = (int) (Math.ceil(eventEntity.level().random.nextDouble() * rollRange ) + MyConfig.MinIronDropAmount);
 
 				if (MyConfig.ironGolemDropMode == 2) {
 					ItemStack itemStackToDrop = new ItemStack(Items.IRON_NUGGET, (int) randomLootRoll);
-					ItemEntity myItemEntity = new ItemEntity(eventEntity.level, eventEntity.getX(), eventEntity.getY(), eventEntity.getZ(), itemStackToDrop);
+					ItemEntity myItemEntity = new ItemEntity(eventEntity.level(), eventEntity.getX(), eventEntity.getY(), eventEntity.getZ(), itemStackToDrop);
 					eventItems.add(myItemEntity);
 				}
 				else
 				if (MyConfig.ironGolemDropMode == 1) {
 					ItemStack itemStackToDrop = new ItemStack(Items.IRON_INGOT, (int) randomLootRoll);
-					ItemEntity myItemEntity = new ItemEntity(eventEntity.level, eventEntity.getX(), eventEntity.getY(), eventEntity.getZ(), itemStackToDrop);
+					ItemEntity myItemEntity = new ItemEntity(eventEntity.level(), eventEntity.getX(), eventEntity.getY(), eventEntity.getZ(), itemStackToDrop);
 					eventItems.add(myItemEntity);
 				}
 				else
 				if (MyConfig.ironGolemDropMode == 3) {
 					ItemStack itemStackToDrop = new ItemStack(Items.IRON_BLOCK, (int) randomLootRoll);
-					ItemEntity myItemEntity = new ItemEntity(eventEntity.level, eventEntity.getX(), eventEntity.getY(), eventEntity.getZ(), itemStackToDrop);
+					ItemEntity myItemEntity = new ItemEntity(eventEntity.level(), eventEntity.getX(), eventEntity.getY(), eventEntity.getZ(), itemStackToDrop);
 					eventItems.add(myItemEntity);
 				}
 
-				Utility.debugMsg(0, event.getEntity().blockPosition(), "Poor Golems: A Golem Died at: "
+				Utility.debugMsg(1, event.getEntity().blockPosition(), "Poor Golems: A Golem Died at: "
 							+"and dropped "+ randomLootRoll +" iron.");
 
 
