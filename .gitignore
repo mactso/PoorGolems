@@ -7,6 +7,6 @@
 /run/
 /build/
 /.project
-/*.launch
+*.launch
 /go16.bat
 /.eclipse/
