@@ -34,7 +34,7 @@ public class GolemSpawnEvent {
 			
 //			System.out.println("EntityId=" + e.getId());
 			BlockPos spawnPos = BlockPos.containing(e.getX(), e.getY(), e.getZ());
-			AABB aabb = new AABB(spawnPos.east(16).above(8).north(16), spawnPos.west(16).below(8).south(16));
+			AABB aabb = AABB.encapsulatingFullBlocks(spawnPos.east(16).above(8).north(16), spawnPos.west(16).below(8).south(16));
 			List<Entity> l  = new ArrayList<>();
 			varW.getEntities().get(EntityType.IRON_GOLEM,
 					aabb,

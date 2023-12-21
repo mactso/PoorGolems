@@ -1,11 +1,12 @@
 modLoader="javafml"
-loaderVersion="[46,)"
+loaderVersion="[49,)"
 license="MIT License"
 [[mods]]
 modId="poorgolems"
 version="${file.jarVersion}"
 displayName="Poor Golems Mod"
 displayURL="https://www.curseforge.com/minecraft/mc-mods/poor-golems"
+displayTest="IGNORE_SERVER_VERSION"
 updateJSONURL="https://github.com/mactso/PoorGolems/raw/master/update.json"
 logoFile="logo.png"
 authors="MacTso, Lupicus"
@@ -13,13 +14,13 @@ description='Poor Golems.'
 [[dependencies.poorgolems]]
     modId="forge"
     mandatory=true
-    versionRange="[46,)"
+    versionRange="[49,)"
     ordering="NONE"
     side="BOTH"
 
 [[dependencies.poorgolems]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.20,1.21)"
+    versionRange="[1.20.4,1.21)"
     ordering="NONE"
     side="BOTH"
