@@ -43,7 +43,7 @@ public class GolemDropsEvent {
 				long worldTime = eventEntity.level.getGameTime();
 				if (tickTimer > worldTime) {
 					long seconds = 1 + ((tickTimer - worldTime) / 20);
-					Utility.debugMsg (0, event.getEntity().blockPosition(), "Poor Golems: A Golem Died "+ seconds +" Seconds sToo soon and dropped no iron.");
+					Utility.debugMsg (1, event.getEntity().blockPosition(), "Poor Golems: A Golem Died "+ seconds +" Seconds sToo soon and dropped no iron.");
 					return;
 				}
 
