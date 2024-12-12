@@ -1,5 +1,5 @@
 modLoader="javafml"
-loaderVersion="[49,)"
+loaderVersion="[52,)"
 license="MIT License"
 [[mods]]
 modId="poorgolems"
@@ -14,13 +14,14 @@ description='Poor Golems.'
 [[dependencies.poorgolems]]
     modId="forge"
     mandatory=true
-    versionRange="[49,)"
+    versionRange="[52,)"
     ordering="NONE"
     side="BOTH"
 
 [[dependencies.poorgolems]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.20.4,1.21)"
+    versionRange="[1.21.1,1.22)"
     ordering="NONE"
-    side="BOTH"
+    side="SERVER"
+# side="BOTH", "CLIENT?", "SERVER"
