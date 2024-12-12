@@ -43,7 +43,7 @@ public class GolemSpawnEvent {
 						});
 			if (l.size() >= MyConfig.getIronGolemChunkLimit()) {
 				BlockPos pos = spawnPos;
-				event.getEntity().setPos(pos.getX(), -3, pos.getZ());
+				event.getEntity().setPos(pos.getX(), event.getEntity().level.getMinBuildHeight()-3, pos.getZ());
 				event.getEntity().hurt(DamageSource.OUT_OF_WORLD, 200);		
 					Utility.debugMsg(0, event.getEntity().blockPosition(), "Poor Golems: "+ MyConfig.getIronGolemChunkLimit()+" Golem Chunk Limit Blocked Attempted Golem Spawn.");
 
