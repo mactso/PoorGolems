@@ -33,8 +33,15 @@ public class GolemDropsEvent {
 			
 			if (eventEntity instanceof IronGolem) {
 
+
 				Collection<ItemEntity> eventItems = event.getDrops();
 				eventItems.removeIf((itemEntity) -> {return itemEntity.getItem().getItem() == Items.IRON_INGOT;});
+
+				if (eventEntity.blockPosition().getY() < eventEntity.level().getMinBuildHeight()) {
+					// excess golems killed by the golem limit.
+					return;
+				}
+
 				
 				long worldTime = eventEntity.level().getGameTime();
 				if (tickTimer > worldTime) {
@@ -53,19 +60,19 @@ public class GolemDropsEvent {
 				@SuppressWarnings("resource")
 				int randomLootRoll = (int) (Math.ceil(eventEntity.level().random.nextDouble() * rollRange ) + MyConfig.MinIronDropAmount);
 
-				if (MyConfig.ironGolemDropMode == 2) {
+				if (MyConfig.ironGolemDropMode == MyConfig.DROP_NUGGETS) {
 					ItemStack itemStackToDrop = new ItemStack(Items.IRON_NUGGET, (int) randomLootRoll);
 					ItemEntity myItemEntity = new ItemEntity(eventEntity.level(), eventEntity.getX(), eventEntity.getY(), eventEntity.getZ(), itemStackToDrop);
 					eventItems.add(myItemEntity);
 				}
 				else
-				if (MyConfig.ironGolemDropMode == 1) {
+				if (MyConfig.ironGolemDropMode == MyConfig.DROP_INGOTS) {
 					ItemStack itemStackToDrop = new ItemStack(Items.IRON_INGOT, (int) randomLootRoll);
 					ItemEntity myItemEntity = new ItemEntity(eventEntity.level(), eventEntity.getX(), eventEntity.getY(), eventEntity.getZ(), itemStackToDrop);
 					eventItems.add(myItemEntity);
 				}
 				else
-				if (MyConfig.ironGolemDropMode == 3) {
+				if (MyConfig.ironGolemDropMode == MyConfig.DROP_BLOCKS) {
 					ItemStack itemStackToDrop = new ItemStack(Items.IRON_BLOCK, (int) randomLootRoll);
 					ItemEntity myItemEntity = new ItemEntity(eventEntity.level(), eventEntity.getX(), eventEntity.getY(), eventEntity.getZ(), itemStackToDrop);
 					eventItems.add(myItemEntity);

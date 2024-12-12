@@ -20,6 +20,10 @@ public class MyConfig
 	private static final Logger LOGGER = LogManager.getLogger();
 	public static final Common COMMON;
 	public static String ironGolemDropModeDescriptions[] = new String []{"","Ingots","Nuggets","Blocks"};
+	public static final int DROP_INGOTS = 2;
+	public static final int DROP_NUGGETS = 2;
+	public static final int DROP_BLOCKS = 2;
+	
 	public static final ForgeConfigSpec COMMON_SPEC;
 	static
 	{
