@@ -23,7 +23,7 @@ public class GolemSpawnEvent {
 	@SubscribeEvent
 	public void handleGolemSpawnEvent(EntityJoinLevelEvent event) {
 
-		if (event.getLevel() instanceof ServerLevel varW && 
+		if (event.getLevel() instanceof ServerLevel sLevel && 
 		    event.getEntity() instanceof IronGolem e) {
 
 			CompoundTag nbt = e.getPersistentData();
@@ -36,7 +36,7 @@ public class GolemSpawnEvent {
 			BlockPos spawnPos = BlockPos.containing(e.getX(), e.getY(), e.getZ());
 			AABB aabb = AABB.encapsulatingFullBlocks(spawnPos.east(16).above(8).north(16), spawnPos.west(16).below(8).south(16));
 			List<Entity> l  = new ArrayList<>();
-			varW.getEntities().get(EntityType.IRON_GOLEM,
+			sLevel.getEntities().get(EntityType.IRON_GOLEM,
 					aabb,
 					(entity)->{
 						l.add(entity);
@@ -44,7 +44,7 @@ public class GolemSpawnEvent {
 						});
 			if (l.size() >= MyConfig.getIronGolemChunkLimit()) {
 				BlockPos pos = spawnPos;
-				event.getEntity().setPos(pos.getX(), -3, pos.getZ());
+				event.getEntity().setPos(pos.getX(), event.getEntity().level().getMinBuildHeight()-3, pos.getZ());
 				event.getEntity().hurt(event.getEntity().damageSources().fellOutOfWorld(), 200);		
 					Utility.debugMsg(2, event.getEntity().blockPosition(), "Poor Golems: "+ MyConfig.getIronGolemChunkLimit()+" Golem Chunk Limit Blocked Attempted Golem Spawn.");
 

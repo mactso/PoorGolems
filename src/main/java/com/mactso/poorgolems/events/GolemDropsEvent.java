@@ -33,6 +33,10 @@ public class GolemDropsEvent {
 			
 			if (eventEntity instanceof IronGolem) {
 
+				if (eventEntity.blockPosition().getY() < eventEntity.level().getMinBuildHeight()) {
+					return;
+				}
+				
 				Collection<ItemEntity> eventItems = event.getDrops();
 				eventItems.removeIf((itemEntity) -> {return itemEntity.getItem().getItem() == Items.IRON_INGOT;});
 				
