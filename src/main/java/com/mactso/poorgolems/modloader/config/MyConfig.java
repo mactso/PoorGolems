@@ -1,28 +1,25 @@
-package com.mactso.poorgolems.config;
+package com.mactso.poorgolems.modloader.config;
 
 
 import org.apache.commons.lang3.tuple.Pair;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
-import com.mactso.poorgolems.Main;
+import com.mactso.poorgolems.modloader.main.Main;
 
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.IntValue;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.eventbus.api.listener.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
 
 @Mod.EventBusSubscriber(modid = Main.MODID, bus=Mod.EventBusSubscriber.Bus.MOD)
-// @Mod.EventBusSubscriber(modid = Main.MODID, bus=Mod.EventBusSubscriber.Bus.MOD)
 public class MyConfig
 {
-	private static final Logger LOGGER = LogManager.getLogger();
+
 	public static final Common COMMON;
 	public static String ironGolemDropModeDescriptions[] = new String []{"","Ingots","Nuggets","Blocks"};
-	public static final int DROP_INGOTS = 2;
+	public static final int DROP_INGOTS = 1;
 	public static final int DROP_NUGGETS = 2;
-	public static final int DROP_BLOCKS = 2;
+	public static final int DROP_BLOCKS = 3;
 	
 	public static final ForgeConfigSpec COMMON_SPEC;
 	static

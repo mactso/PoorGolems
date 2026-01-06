@@ -1,4 +1,4 @@
-package com.mactso.poorgolems.util;
+package com.mactso.poorgolems.common.util;
 
 import java.io.FileOutputStream;
 import java.io.IOException;

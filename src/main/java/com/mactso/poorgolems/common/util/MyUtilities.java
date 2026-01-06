@@ -1,10 +1,10 @@
-package com.mactso.poorgolems.util;
+package com.mactso.poorgolems.common.util;
 
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.mactso.poorgolems.config.MyConfig;
+import com.mactso.poorgolems.modloader.config.MyConfig;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -18,7 +18,8 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.Heightmap.Types;
 import net.minecraft.world.phys.Vec3;
 
-public class Utility {
+public class MyUtilities {
+	
 	public final static int FOUR_SECONDS = 80;
 	public final static int TWO_SECONDS = 40;
 	public final static float Pct00 = 0.00f;
@@ -39,7 +40,7 @@ public class Utility {
 	private static final Logger LOGGER = LogManager.getLogger();
 
 	
-	public static void dbgChatln(Player p, String msg, int level) {
+	public static void dbgChatln(ServerPlayer p, String msg, int level) {
 		if (MyConfig.getDebugLevel() > level - 1) {
 			sendChat(p, msg, ChatFormatting.YELLOW);
 		}
@@ -75,7 +76,7 @@ public class Utility {
 
 	}
 
-	public static void sendBoldChat(Player p, String chatMessage, ChatFormatting textColor) {
+	public static void sendBoldChat(ServerPlayer p, String chatMessage, ChatFormatting textColor) {
 
 		MutableComponent component = Component.literal(chatMessage);
 		component.setStyle(component.getStyle().withBold(true));
@@ -85,7 +86,7 @@ public class Utility {
 
 	}
 
-	public static void sendChat(Player p, String chatMessage, ChatFormatting textColor) {
+	public static void sendChat(ServerPlayer p, String chatMessage, ChatFormatting textColor) {
 
 		MutableComponent component = Component.literal(chatMessage);
 		component.setStyle(component.getStyle().withColor(textColor));
